@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "dom"],
+    "lib": ["es5", "es6"],
     "target": "es5",
     "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
     "moduleResolution": "node",
+    "outDir": "./build",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
-  },
-  "include": ["src/**/*.ts"]
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "resolveJsonModule": true
+  }
 }
