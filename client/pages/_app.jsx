@@ -1,5 +1,10 @@
-import '../style/index.css'
+import Layout from "../components/Main/Layout";
+import "../style/index.css";
 
 export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  );
 }

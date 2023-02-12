@@ -1,0 +1,6 @@
+.alignment {
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
