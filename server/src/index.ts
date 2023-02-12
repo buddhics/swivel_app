@@ -6,6 +6,7 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "./app-error";
 import { param, checkSchema, validationResult } from "express-validator";
 import { validationSchema } from "./validation-schema";
+import * as cors from "cors";
 
 AppDataSource.initialize()
   .then(async () => {
@@ -26,6 +27,16 @@ AppDataSource.initialize()
 
     // create and setup express app
     const app = express();
+
+    // const allowedOrigins = ["http://localhost:3000"];
+
+    // const options: cors.CorsOptions = {
+    //   origin: allowedOrigins,
+    // };
+
+    // Then pass these options to cors:
+    app.use(cors());
+
     app.use(express.json());
 
     // register routes
@@ -147,7 +158,16 @@ AppDataSource.initialize()
     app.use(
       (error: AppError, req: Request, res: Response, next: NextFunction) => {
         res.status(error.status || 500);
-        res.json({ error: error.message });
+        res.json({
+          errors: [
+            {
+              value: "",
+              msg: error.message,
+              param: "id",
+              location: "",
+            },
+          ],
+        });
       }
     );
 
