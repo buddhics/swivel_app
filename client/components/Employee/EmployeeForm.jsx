@@ -8,16 +8,40 @@ import { addEmployees } from "../../slices/employeeSlice";
 function EmployeeForm({ type }) {
   const router = useRouter();
   const dispatch = useDispatch();
+
   const [employee, setEmployee] = useState({
     first_name: "",
     last_name: "",
     email: "",
     number: "",
-    gender: "",
+    gender: "M",
     photo: "https://randomuser.me/api/portraits/men/7.jpg",
   });
 
+  const [validation, setValidation] = useState({
+    first_name: true,
+    last_name: true,
+    email: true,
+    number: true,
+  });
+
+  const validationLogic = (name) => {
+    console.log(name)
+    switch(name){
+      case 'first_name':
+        const isValidFirstName =((employee.first_name.length >= 5) && (employee.first_name.length < 10));
+        console.log(isValidFirstName);
+        setValidation({ ...validation, [name]: isValidFirstName });
+        break;
+      case 'Mangoes':
+      case 'Papayas':
+        console.log('Mangoes and papayas are $2.79 a pound.');
+      // Expected output: "Mangoes and papayas are $2.
+    }
+  };
+
   const handleChange = (e) => {
+    validationLogic(e.target.name);
     setEmployee({ ...employee, [e.target.name]: e.target.value });
   };
 
@@ -45,12 +69,12 @@ function EmployeeForm({ type }) {
         style={{ width: "30rem" }}
         className="shadow-lg p-3 mb-5 bg-white rounded"
       >
-        <Form className="m-3">
+        <Form className="m-3" onSubmit={submitButton}>
           <fieldset>
             <Form.Group className="row justify-content-between">
               <Form.Label className="col-md-4">First Name</Form.Label>
               <Form.Control
-                className="col-md-7 mr-3"
+                className={`col-md-7 mr-3 ${validation.first_name ? "":classes.error}`}
                 placeholder="First Name"
                 value={employee.first_name}
                 name="first_name"
@@ -95,7 +119,8 @@ function EmployeeForm({ type }) {
                 as="select"
                 value={employee.gender}
                 name="gender"
-                onChange={handleChange}
+                defaultValue={employee.gender}
+                onChange={(handleChange)}
               >
                 <option value={"M"}>Male</option>
                 <option value={"F"}>Female</option>
@@ -106,7 +131,6 @@ function EmployeeForm({ type }) {
                 variant="outline-primary"
                 className="mr-3"
                 type="submit"
-                onClick={submitButton}
               >
                 <strong>{type}</strong>
               </Button>

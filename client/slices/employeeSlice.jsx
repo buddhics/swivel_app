@@ -20,13 +20,11 @@ export const fetchEmployees = createAsyncThunk("fetchEmployees", async () => {
 });
 
 export const addEmployees = createAsyncThunk("addEmployees", async (data) => {
-  console.log(data);
   const res = await axios({
     method: "post",
     url: "http://localhost:3001/employee",
     data: data,
   });
-  console.log(res);
   return res.data;
 });
 
@@ -48,6 +46,10 @@ export const employeeSlice = createSlice({
 
     builder.addCase(addEmployees.fulfilled, (state, action) => {
       state.value.data.push(action.payload);
+    });
+
+    builder.addCase(addEmployees.rejected, (state, action) => {
+      state.value.error.push(action.payload);
     });
 
     builder.addCase(HYDRATE, (state, action) => {
