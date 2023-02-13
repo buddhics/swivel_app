@@ -28,6 +28,15 @@ export const addEmployees = createAsyncThunk("addEmployees", async (data) => {
   return res.data;
 });
 
+export const editEmployees = createAsyncThunk("editEmployees", async (id, data) => {
+  const res = await axios({
+    method: "put",
+    url: `http://localhost:3001/employee/${id}`,
+    data: data,
+  });
+  return res.data;
+});
+
 export const employeeSlice = createSlice({
   name: "employees",
   initialState: initialState,
@@ -50,6 +59,17 @@ export const employeeSlice = createSlice({
 
     builder.addCase(addEmployees.rejected, (state, action) => {
       state.value.error.push(action.payload);
+    });
+
+    builder.addCase(editEmployees.fulfilled, (state, action) => {
+      state.value.data.forEach(e => {
+        if(e.id === action.payload.id){
+          e.first_name = action.payload.first_name;
+          e.last_name = action.payload.last_name;
+          e.email = action.payload.email;
+          e.number = action.payload.number;
+        }
+      });
     });
 
     builder.addCase(HYDRATE, (state, action) => {
