@@ -28,11 +28,12 @@ export const addEmployees = createAsyncThunk("addEmployees", async (data) => {
   return res.data;
 });
 
-export const editEmployees = createAsyncThunk("editEmployees", async (id, data) => {
+export const editEmployees = createAsyncThunk("editEmployees", async (data) => {
+  console.log(data)
   const res = await axios({
     method: "put",
-    url: `http://localhost:3001/employee/${id}`,
-    data: data,
+    url: `http://localhost:3001/employee/${data.eid}`,
+    data: data.employee,
   });
   return res.data;
 });

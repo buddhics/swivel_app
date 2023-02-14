@@ -3,35 +3,37 @@ import classes from "./EmployeeForm.module.css";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { addEmployees } from "../../slices/employeeSlice";
+import { addEmployees, editEmployees } from "../../slices/employeeSlice";
 
 function EmployeeForm({ type, eid=0 }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const currentEmployees = useSelector(state => state.employees.employees.value.data);
-  console.log(currentEmployees);
 
-  const [employee, setEmployee] = useState({
+  var employeeState = {
     first_name: "",
     last_name: "",
     email: "",
     number: "",
     gender: "M",
     photo: "https://randomuser.me/api/portraits/men/7.jpg",
-  });
+  };
 
   if(type === "Edit" && eid !== 0){
+    let id = eid-1;;
     let curruntEmployee = {
-      first_name: currentEmployees[eid].first_name,
-      last_name: currentEmployees[eid].last_name,
-      email: currentEmployees[eid].email,
-      number: currentEmployees[eid].number,
-      gender: currentEmployees[eid].gender,
-      photo: currentEmployees[eid].photo,
+      first_name: currentEmployees[id].first_name,
+      last_name: currentEmployees[id].last_name,
+      email: currentEmployees[id].email,
+      number: currentEmployees[id].number,
+      gender: currentEmployees[id].gender,
+      photo: currentEmployees[id].photo,
     }
-    console.log(curruntEmployee);
-    setEmployee(curruntEmployee);
+    employeeState = curruntEmployee;
   }
+
+  const [employee, setEmployee] = useState(employeeState);
+
 
   const [isValidFirstName, setFirstNameState] = useState(true);
   const [isValidLastName, setLastNameState] = useState(true);
@@ -84,6 +86,10 @@ function EmployeeForm({ type, eid=0 }) {
         }
         break;
       case "Edit":
+        e.preventDefault();
+          dispatch(editEmployees({eid, employee}));
+          resetButton();
+          router.push("/employee/list");
         break;
     }
   };
